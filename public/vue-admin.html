@@ -962,38 +962,40 @@
                     </div>
 
                     <div class="form-group">
-                        <label>رابط الصورة (URL) *</label>
-                        <input 
-                            v-model="newProduct.image" 
-                            type="url" 
-                            placeholder="https://example.com/image.jpg"
-                            @input="previewImage"
-                            required>
+                        <label>رابط الصورة (URL) أو ارفع صورة *</label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input 
+                                v-model="newProduct.image" 
+                                type="url" 
+                                placeholder="https://example.com/image.jpg"
+                                @input="previewImage"
+                                style="flex: 1;"
+                            >
+                            <input 
+                                ref="fileInput" 
+                                type="file" 
+                                accept="image/*" 
+                                style="display: none;"
+                                @change="handleFileUpload"
+                            >
+                            <button type="button" class="btn btn-secondary" @click="$refs.fileInput.click()">
+                                <i class="fas fa-upload"></i> رفع صورة
+                            </button>
+                        </div>
                         <small style="color: #666; display: block; margin-top: 5px;">
-                            💡 يمكنك استخدام روابط من: Unsplash, Imgur, أو أي موقع استضافة صور
+                            💡 يمكنك استخدام رابط صورة أو رفع صورة من جهازك (سيتم رفعها تلقائياً)
                         </small>
                     </div>
 
                     <div class="form-group">
                         <label>معاينة الصورة</label>
-                        <div 
-                            class="upload-area"
-                            :class="{ 'has-image': imagePreview }"
-                            @click="$refs.fileInput.click()">
-                            
+                        <div class="upload-area" :class="{ 'has-image': imagePreview }">
                             <img v-if="imagePreview" :src="imagePreview" class="upload-preview" alt="Preview">
-                            
                             <div v-else class="upload-placeholder">
                                 <i class="fas fa-cloud-upload-alt"></i>
-                                <p>اضغط لإضافة رابط الصورة أو اسحب الصورة هنا</p>
+                                <p>لم يتم اختيار صورة بعد</p>
                             </div>
                         </div>
-                        <input 
-                            ref="fileInput" 
-                            type="file" 
-                            accept="image/*" 
-                            style="display: none;"
-                            @change="handleFileUpload">
                     </div>
 
                     <div class="form-group">
@@ -1468,6 +1470,36 @@ createApp({
     },
     
     methods: {
+                previewImage() {
+                    if (this.newProduct.image) {
+                        this.imagePreview = this.newProduct.image;
+                    } else {
+                        this.imagePreview = null;
+                    }
+                },
+
+                async handleFileUpload(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    try {
+                        const res = await fetch('http://localhost:4000/api/upload', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await res.json();
+                        if (data && data.url) {
+                            this.newProduct.image = data.url;
+                            this.imagePreview = data.url;
+                            this.showAlert('success', '✅ تم رفع الصورة بنجاح!');
+                        } else {
+                            this.showAlert('danger', 'حدث خطأ أثناء رفع الصورة!');
+                        }
+                    } catch (err) {
+                        this.showAlert('danger', 'حدث خطأ أثناء رفع الصورة!');
+                    }
+                },
         initializeCredentials() {
             // Initialize default credentials if not exist
             if (!localStorage.getItem('adminUsername')) {
