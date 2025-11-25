@@ -1,0 +1,1960 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطبعة المدينة - خدمات الطباعة الاحترافية</title>
+    
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vue.js 3 CDN -->
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+    
+    <style>
+        :root {
+            --navy-blue: #0B1A36;
+            --gold-accent: #D4AF37;
+            --white: #ffffff;
+            --light-gray: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        .navbar-custom {
+            background: var(--navy-blue);
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .navbar-custom.scrolled {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+
+        .navbar-brand {
+            color: var(--gold-accent) !important;
+            font-weight: 700;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin: 0 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+
+        .nav-link-custom:hover {
+            color: var(--gold-accent) !important;
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        .nav-link-custom.admin-link {
+            background: var(--gold-accent);
+            color: var(--navy-blue) !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+        }
+
+        .nav-link-custom.admin-link:hover {
+            background: #b8941e;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--gold-accent);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu-toggle i {
+            color: var(--navy-blue);
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #b8941e;
+            transform: scale(1.05);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 0;
+            width: 100%;
+            background: var(--navy-blue);
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            animation: slideDown 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            color: var(--white);
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            background: var(--gold-accent);
+            color: var(--navy-blue);
+        }
+
+        .mobile-menu a.admin-link {
+            background: var(--gold-accent);
+            color: var(--navy-blue);
+            font-weight: 700;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0;
+            padding-top: 90px;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('pngtree-photolab-print-printing-of-landscapes-on-a-large-format-printer-image_2971395.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(11, 26, 54, 0.75) 0%, rgba(26, 47, 79, 0.70) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--gold-accent);
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--white);
+            opacity: 1;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+            font-weight: 600;
+        }
+
+        .btn-hero {
+            background: var(--gold-accent);
+            color: var(--navy-blue);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.6);
+            color: var(--navy-blue);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy-blue);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gold-accent);
+            border-radius: 2px;
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card i {
+            font-size: 3.5rem;
+            color: var(--gold-accent);
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .service-card h4 {
+            color: var(--navy-blue);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .testimonial-quote {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold-accent), #b8941e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonial-quote i {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .testimonial-stars {
+            margin: 20px 0 15px 0;
+            text-align: right;
+        }
+
+        .testimonial-stars i {
+            color: #ffc107;
+            font-size: 1rem;
+            margin-left: 3px;
+        }
+
+        .testimonial-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-top: 20px;
+            border-top: 2px solid var(--light-gray);
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--navy-blue), #1a2f5a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .author-avatar i {
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+        }
+
+        .author-info h5 {
+            margin: 0;
+            color: var(--navy-blue);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .author-info p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Portfolio */
+        .portfolio-filters {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--gold-accent);
+            color: var(--navy-blue);
+            padding: 10px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--gold-accent);
+            color: var(--white);
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 26, 54, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay i {
+            color: var(--gold-accent);
+            font-size: 3rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control-custom {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-control-custom:focus {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+        }
+
+        .btn-submit {
+            background: var(--navy-blue);
+            color: var(--white);
+            padding: 12px 40px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold-accent);
+            color: var(--navy-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-submit:disabled:hover {
+            background: #ccc;
+            color: #666;
+            transform: none;
+        }
+
+        /* Contact Info Cards */
+        .contact-info-card {
+            background: var(--white);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            height: 100%;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--navy-blue), #1a2f4f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s;
+        }
+
+        .contact-info-card:hover .icon-circle {
+            background: linear-gradient(135deg, var(--gold-accent), #b8941e);
+            transform: scale(1.1);
+        }
+
+        .icon-circle i {
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .contact-info-card h5 {
+            color: var(--navy-blue);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .contact-info-card a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .contact-info-card a:hover {
+            color: var(--navy-blue);
+        }
+
+        /* Map Container */
+        .map-container {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-container iframe {
+            transition: all 0.3s;
+        }
+
+        .map-container:hover iframe {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--navy-blue);
+            color: var(--white);
+            padding: 40px 0 20px;
+        }
+
+        .footer h5 {
+            color: var(--gold-accent);
+            margin-bottom: 20px;
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--gold-accent);
+        }
+
+        /* Responsive Design */
+        
+        /* Large Tablets & Small Laptops (max-width: 1024px) */
+        @media (max-width: 1024px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .service-card {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Tablets (max-width: 768px) */
+        @media (max-width: 768px) {
+            .navbar-custom {
+                padding: 10px 0;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
+
+            .navbar-brand img {
+                height: 40px;
+            }
+
+            .nav-link-custom {
+                display: none !important;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero-section {
+                padding: 60px 0;
+                min-height: 70vh;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .btn-hero {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .service-card {
+                padding: 25px 15px;
+                margin-bottom: 20px;
+            }
+
+            .service-card i {
+                font-size: 2.5rem;
+            }
+
+            .portfolio-item img {
+                height: 250px;
+            }
+
+            .contact-form {
+                padding: 30px 20px;
+            }
+
+            .contact-info-card {
+                padding: 25px 15px;
+                margin-bottom: 20px;
+            }
+
+            .icon-circle {
+                width: 60px;
+                height: 60px;
+            }
+
+            .icon-circle i {
+                font-size: 1.5rem;
+            }
+
+            .map-container {
+                padding: 20px;
+            }
+
+            .map-container iframe {
+                height: 300px;
+            }
+        }
+
+        /* Mobile Phones (max-width: 576px) */
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .navbar-brand img {
+                height: 35px;
+            }
+
+            .nav-link-custom {
+                display: none !important;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .hero-section {
+                margin-top: 0;
+                padding-top: 130px;
+                min-height: 60vh;
+                padding-bottom: 40px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+
+            .btn-hero {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+
+            .section-title p {
+                font-size: 0.9rem;
+            }
+
+            .service-card {
+                padding: 20px 15px;
+            }
+
+            .service-card i {
+                font-size: 2rem;
+            }
+
+            .service-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .service-card p {
+                font-size: 0.85rem;
+            }
+
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+                margin: 3px;
+            }
+
+            .portfolio-item {
+                margin-bottom: 20px;
+            }
+
+            .portfolio-item img {
+                height: 200px;
+            }
+
+            .contact-form {
+                padding: 20px 15px;
+            }
+
+            .contact-info-card {
+                padding: 20px 15px;
+            }
+
+            .contact-info-card h5 {
+                font-size: 1rem;
+            }
+
+            .icon-circle {
+                width: 50px;
+                height: 50px;
+            }
+
+            .icon-circle i {
+                font-size: 1.2rem;
+            }
+
+            .map-container {
+                padding: 15px;
+            }
+
+            .map-container h4 {
+                font-size: 1.1rem;
+            }
+
+            .map-container iframe {
+                height: 250px;
+                border-radius: 10px;
+            }
+
+            .footer {
+                padding: 30px 0 15px;
+            }
+
+            .footer h5 {
+                font-size: 1.1rem;
+            }
+
+            .footer p {
+                font-size: 0.85rem;
+            }
+
+            .footer img {
+                height: 30px !important;
+            }
+        }
+
+        /* Extra Small Devices (max-width: 375px) */
+        @media (max-width: 375px) {
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.3rem;
+            }
+
+            .service-card {
+                padding: 15px 10px;
+            }
+
+            .portfolio-item img {
+                height: 180px;
+            }
+
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .contact-info-card {
+                padding: 15px 10px;
+            }
+
+            .map-container iframe {
+                height: 200px;
+            }
+        }
+
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            background-color: #128C7E;
+            transform: scale(1.1);
+            box-shadow: 2px 2px 20px rgba(0,0,0,0.4);
+        }
+
+        .whatsapp-float i {
+            margin-top: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        /* Product Modal */
+        .product-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .product-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 1000px;
+            max-height: 90vh;
+            width: 100%;
+            position: relative;
+            animation: modalSlideIn 0.4s ease;
+            overflow-y: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--navy-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: var(--gold-accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold-accent), #b8941e);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Custom Scrollbar for Modal */
+        .product-modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .product-modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .product-modal-content::-webkit-scrollbar-thumb {
+            background: var(--gold-accent);
+            border-radius: 10px;
+        }
+
+        .product-modal-content::-webkit-scrollbar-thumb:hover {
+            background: var(--navy-blue);
+        }
+
+        .product-details-list {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-right: 4px solid var(--gold-accent);
+        }
+
+        @media (max-width: 768px) {
+            .product-modal-content {
+                padding: 20px;
+            }
+
+            .modal-product-image {
+                height: 250px;
+            }
+        }
+
+        /* Landscape Mode for Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero-section {
+                min-height: 100vh;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Fade Animation */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s;
+        }
+        .fade-enter-from, .fade-leave-to {
+            opacity: 0;
+        }
+
+        /* Slide Animation */
+        .slide-enter-active, .slide-leave-active {
+            transition: all 0.3s;
+        }
+        .slide-enter-from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- Navbar -->
+    <nav class="navbar-custom" :class="{ scrolled: isScrolled }">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a class="navbar-brand" href="#">
+                    <img src="logo-new.png" alt="مطبعة المدينة">
+                    مطبعة المدينة
+                </a>
+                <div class="d-none d-lg-flex">
+                    <a v-for="item in navItems" :key="item.id" 
+                       :href="item.link" 
+                       :class="['nav-link-custom', { 'admin-link': item.name === 'لوحة الإدارة' }]">
+                        <i v-if="item.name === 'لوحة الإدارة'" class="fas fa-cog me-1"></i>
+                        {{ item.name }}
+                    </a>
+                </div>
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle d-lg-none" @click="mobileMenuOpen = !mobileMenuOpen">
+                    <i :class="mobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" :class="{ active: mobileMenuOpen }">
+        <a v-for="item in navItems" 
+           :key="item.id" 
+           :href="item.link"
+           :class="{ 'admin-link': item.name === 'لوحة الإدارة' }"
+           @click="mobileMenuOpen = false">
+            <i v-if="item.name === 'لوحة الإدارة'" class="fas fa-cog me-2"></i>
+            {{ item.name }}
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <!-- Background Image -->
+        <div class="hero-background"></div>
+        
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8">
+                    <div class="hero-content" style="text-align: center;">
+                        <transition name="fade">
+                            <h1 v-if="showHero">{{ heroTitle }}</h1>
+                        </transition>
+                        <transition name="fade">
+                            <p v-if="showHero">{{ heroSubtitle }}</p>
+                        </transition>
+                        <a href="#portfolio" class="btn-hero">
+                            <i class="fas fa-images me-2"></i>
+                            اطلع على أعمالنا
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Makes Us Special Section -->
+    <section style="background: var(--white); padding: 80px 0;">
+        <div class="container">
+            <div class="section-title">
+                <h2>ما يميز مطبعة المدينة</h2>
+                <p>تجربة متكاملة من التصميم إلى التسليم</p>
+            </div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div style="padding: 40px;">
+                        <h3 style="color: var(--navy-blue); margin-bottom: 25px; font-weight: 700;">
+                            نقدّم لك تجربة متكاملة… من التصميم إلى التسليم
+                        </h3>
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 30px;">
+                            جميع مراحل العمل تحت سقف واحد لضمان السرعة، الدقة، والجودة.
+                        </p>
+                        
+                        <div style="margin-bottom: 30px;">
+                            <h4 style="color: var(--gold-accent); margin-bottom: 20px;">ما يميز مطبعة المدينة:</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center;">
+                                    <i class="fas fa-check-circle" style="color: var(--gold-accent); margin-left: 15px; font-size: 1.2rem;"></i>
+                                    خدمات طباعة احترافية بأعلى جودة
+                                </li>
+                                <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center;">
+                                    <i class="fas fa-check-circle" style="color: var(--gold-accent); margin-left: 15px; font-size: 1.2rem;"></i>
+                                    إشراف كامل على كل مرحلة من مراحل الإنتاج
+                                </li>
+                                <li style="padding: 10px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center;">
+                                    <i class="fas fa-check-circle" style="color: var(--gold-accent); margin-left: 15px; font-size: 1.2rem;"></i>
+                                    التزام بالمواعيد ودقة في التنفيذ
+                                </li>
+                                <li style="padding: 10px 0; display: flex; align-items: center;">
+                                    <i class="fas fa-check-circle" style="color: var(--gold-accent); margin-left: 15px; font-size: 1.2rem;"></i>
+                                    حلول تصميم وطباعة تناسب جميع الأنشطة التجارية
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, var(--navy-blue), #1a2f5a); padding: 20px; border-radius: 10px; color: white; text-align: center;">
+                            <p style="margin: 0; font-size: 1.1rem; font-weight: 600;">
+                                <i class="fas fa-star" style="color: var(--gold-accent); margin-left: 10px;"></i>
+                                مطبعة المدينة… جودة تثق فيها، وخدمة تكمّل شغلك على أعلى مستوى
+                                <i class="fas fa-star" style="color: var(--gold-accent); margin-right: 10px;"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div style="text-align: center;">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=600" alt="مطبعة المدينة" style="width: 100%; max-width: 500px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" style="background: var(--light-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>خدماتنا</h2>
+                <p>نقدم مجموعة شاملة من خدمات الطباعة الاحترافية</p>
+            </div>
+            <div class="row g-4">
+                <div v-for="service in services" :key="service.id" class="col-lg-4 col-md-6">
+                    <transition name="slide">
+                        <div class="service-card">
+                            <i :class="service.icon"></i>
+                            <h4>{{ service.title }}</h4>
+                            <p>{{ service.description }}</p>
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section id="clients" style="background: linear-gradient(135deg, var(--navy-blue) 0%, #1a2f5a 100%); color: white; padding: 80px 0;">
+        <div class="container">
+            <div class="section-title">
+                <h2 style="color: var(--gold);">عملاؤنا المميزون</h2>
+                <p style="color: white;">نفخر بثقة كبرى الشركات والمؤسسات الطبية</p>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: rgba(255,255,255,0.1); padding: 40px 30px; border-radius: 15px; backdrop-filter: blur(10px); border: 2px solid var(--gold); transition: all 0.3s;">
+                        <i class="fas fa-candy-cane" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                        <h4 style="color: white; margin-bottom: 15px;">محلات الحلويات الفاخرة</h4>
+                        <p style="color: rgba(255,255,255,0.8); margin: 0;">متعاقدون مع أشهر محلات الحلويات والباتيسيري لتصميم علب فاخرة ومميزة</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: rgba(255,255,255,0.1); padding: 40px 30px; border-radius: 15px; backdrop-filter: blur(10px); border: 2px solid var(--gold); transition: all 0.3s;">
+                        <i class="fas fa-x-ray" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                        <h4 style="color: white; margin-bottom: 15px;">مراكز الأشعة الطبية</h4>
+                        <p style="color: rgba(255,255,255,0.8); margin: 0;">شريك معتمد لمراكز الأشعة والتصوير الطبي لتوفير أغلفة احترافية</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: rgba(255,255,255,0.1); padding: 40px 30px; border-radius: 15px; backdrop-filter: blur(10px); border: 2px solid var(--gold); transition: all 0.3s;">
+                        <i class="fas fa-pills" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
+                        <h4 style="color: white; margin-bottom: 15px;">شركات الأدوية</h4>
+                        <p style="color: rgba(255,255,255,0.8); margin: 0;">نفذنا مشاريع كبرى لشركات أدوية رائدة بأعلى معايير الجودة العالمية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" style="background: var(--light-gray); padding: 80px 0;">
+        <div class="container">
+            <div class="section-title">
+                <h2>آراء عملائنا</h2>
+                <p>ماذا يقول عملاؤنا عن خدماتنا</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "تعاملت مع مطبعة المدينة في تصميم علب الحلويات لمحلي، والنتيجة كانت رائعة! الجودة عالية والتصميم فاخر جداً. عملائي معجبون بالعبوات الجديدة."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="author-info">
+                                <h5>أحمد محمود</h5>
+                                <p>صاحب محل حلويات فاخرة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "شركاء موثوقون لمركزنا الطبي منذ سنوات. أغلفة الأشعة بجودة ممتازة والتسليم دائماً في الموعد. نشكرهم على الاحترافية والالتزام."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="author-info">
+                                <h5>د. سارة إبراهيم</h5>
+                                <p>مديرة مركز الأشعة التخصصي</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "تعاونا معهم في طباعة عبوات أدويتنا وكانت النتيجة مذهلة! الطباعة واضحة والألوان دقيقة. يلتزمون بالمعايير الدوائية بشكل كامل."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div class="author-info">
+                                <h5>م. خالد حسن</h5>
+                                <p>مدير الإنتاج - شركة أدوية</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <div class="container">
+            <div class="section-title">
+                <h2>معرض الأعمال</h2>
+                <p>أعمالنا المميزة في مختلف مجالات الطباعة</p>
+            </div>
+
+            <div class="portfolio-filters">
+                <button 
+                    v-for="filter in filters" 
+                    :key="filter"
+                    @click="activeFilter = filter"
+                    :class="['filter-btn', { active: activeFilter === filter }]">
+                    {{ filter }}
+                </button>
+            </div>
+
+            <div class="row">
+                <div v-for="item in filteredPortfolio" 
+                     :key="item.id" 
+                     class="col-lg-4 col-md-6">
+                    <transition name="fade">
+                        <div class="portfolio-item" @click="openProductDetails(item)">
+                            <img :src="item.image" :alt="item.title">
+                            <div class="portfolio-overlay">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Details Modal -->
+    <transition name="fade">
+        <div v-if="selectedProduct" class="product-modal" @click.self="selectedProduct = null">
+            <div class="product-modal-content">
+                <button class="modal-close" @click="selectedProduct = null">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <img :src="selectedProduct.image" :alt="selectedProduct.title" class="modal-product-image">
+                    </div>
+                    <div class="col-lg-6">
+                        <h3 style="color: var(--navy-blue); margin-bottom: 15px;">
+                            {{ selectedProduct.title }}
+                        </h3>
+                        <span class="product-category-badge">
+                            <i class="fas fa-tag me-2"></i>
+                            {{ selectedProduct.category }}
+                        </span>
+                        <p v-if="selectedProduct.description" style="margin-top: 20px; line-height: 1.8; color: #555;">
+                            {{ selectedProduct.description }}
+                        </p>
+                        <div v-if="selectedProduct.details" class="product-details-list">
+                            <h5 style="color: var(--navy-blue); margin-top: 25px; margin-bottom: 15px;">
+                                <i class="fas fa-info-circle me-2"></i>
+                                التفاصيل:
+                            </h5>
+                            <p style="white-space: pre-line; line-height: 1.8; color: #555;">{{ selectedProduct.details }}</p>
+                        </div>
+                        
+                        <!-- Inquiry Form -->
+                        <div class="inquiry-form" style="margin-top: 30px;">
+                            <h5 style="color: var(--navy-blue); margin-bottom: 15px;">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                معلومات الاستفسار:
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input 
+                                        v-model="inquiryForm.name" 
+                                        type="text" 
+                                        class="form-control form-control-custom" 
+                                        placeholder="الاسم *"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input 
+                                        v-model="inquiryForm.phone" 
+                                        type="tel" 
+                                        class="form-control form-control-custom" 
+                                        placeholder="رقم الهاتف *"
+                                        required>
+                                </div>
+                                <div class="col-12">
+                                    <textarea 
+                                        v-model="inquiryForm.message" 
+                                        class="form-control form-control-custom" 
+                                        rows="3" 
+                                        placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-actions" style="margin-top: 20px;">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <button 
+                                        @click="sendInquiry('201013175636')" 
+                                        class="btn-submit w-100"
+                                        :disabled="!inquiryForm.name || !inquiryForm.phone">
+                                        <i class="fab fa-whatsapp me-2"></i>
+                                        مهندس تصميم /عبدالله حربي
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button 
+                                        @click="sendInquiry('201027731893')" 
+                                        class="btn-submit w-100"
+                                        :disabled="!inquiryForm.name || !inquiryForm.phone">
+                                        <i class="fab fa-whatsapp me-2"></i>
+                                        مهندس تنفيذي /احمد شحاتة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: var(--light-gray);">
+        <div class="container">
+            <div class="section-title">
+                <h2>تواصل معنا</h2>
+                <p>نحن هنا للإجابة على استفساراتك</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Contact Form -->
+                <div class="col-lg-6">
+                    <form @submit.prevent class="contact-form">
+                        <h4 style="color: var(--navy-blue); margin-bottom: 20px;">
+                            <i class="fas fa-envelope me-2"></i>
+                            أرسل لنا رسالة
+                        </h4>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input 
+                                    v-model="form.name" 
+                                    type="text" 
+                                    class="form-control form-control-custom" 
+                                    placeholder="الاسم الكامل *"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <input 
+                                    v-model="form.email" 
+                                    type="email" 
+                                    class="form-control form-control-custom" 
+                                    placeholder="البريد الإلكتروني *"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <input 
+                                    v-model="form.phone" 
+                                    type="tel" 
+                                    class="form-control form-control-custom" 
+                                    placeholder="رقم الهاتف *"
+                                    required>
+                            </div>
+                            <div class="col-12">
+                                <textarea 
+                                    v-model="form.message" 
+                                    class="form-control form-control-custom" 
+                                    rows="10" 
+                                    placeholder="رسالتك *"
+                                    required></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <button 
+                                    type="button"
+                                    @click="submitForm('201013175636')" 
+                                    class="btn-submit w-100"
+                                    :disabled="!form.name || !form.email || !form.phone || !form.message">
+                                    <i class="fab fa-whatsapp me-2"></i>
+                                    م/عبدالله حربي
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button 
+                                    type="button"
+                                    @click="submitForm('201027731893')" 
+                                    class="btn-submit w-100"
+                                    :disabled="!form.name || !form.email || !form.phone || !form.message">
+                                    <i class="fab fa-whatsapp me-2"></i>
+                                     م/احمد شحاتة
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <transition name="fade">
+                            <div v-if="formSubmitted" class="alert alert-success mt-3 text-center">
+                                <i class="fas fa-check-circle me-2"></i>
+                                تم إرسال رسالتك بنجاح! سنتواصل معك قريباً
+                            </div>
+                        </transition>
+                    </form>
+                </div>
+
+                <!-- Google Map -->
+                <div class="col-lg-6">
+                    <div class="map-container" style="height: 100%;">
+                        <h4 style="color: var(--navy-blue); margin-bottom: 20px;">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            موقعنا على الخريطة
+                        </h4>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3534.2!2d31.1837!3d27.1837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x144930000000000%3A0x0!2z2KfZhNmF2YjZgtmVINin2YTYrNiv2YrYr9iMINij2LPZitmI2Kg!5e0!3m2!1sar!2seg!4v1699999999999!5m2!1sar!2seg"
+                            width="100%" 
+                            height="450" 
+                            style="border: 0; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <div class="text-center mt-3">
+                            <a href="https://maps.app.goo.gl/Zd3rLUPQSJp3Ta4A9" 
+                               target="_blank" 
+                               class="btn btn-submit">
+                                <i class="fas fa-directions me-2"></i>
+                                احصل على الاتجاهات
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info Cards -->
+            <div class="row mt-5 g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="icon-circle">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <h5>واتساب</h5>
+                        <a href="https://wa.me/201013175636" target="_blank" style="direction: ltr; display: block;">
+                            +20 101 317 5636
+                        </a>
+                        <br>
+                        <a href="https://wa.me/201027731893" target="_blank" class="mt-1 d-block" style="direction: ltr;">
+                            +20 102 773 1893
+                        </a>
+                        <p class="mt-2" style="font-size: 0.85rem; color: #666;">
+                            تواصل معنا مباشرة
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="icon-circle">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h5>البريد الإلكتروني</h5>
+                        <a href="mailto:madinapress55@gmail.com">
+                            madinapress55@gmail.com
+                        </a>
+                        <p class="mt-2" style="font-size: 0.85rem; color: #666;">
+                            راسلنا في أي وقت
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5>
+                        <img src="logo-new.png" alt="مطبعة المدينة" style="height: 40px; vertical-align: middle; margin-left: 10px;">
+                        مطبعة المدينة
+                    </h5>
+                    <p>شركاء موثوقون لمحلات الحلويات، مراكز الأشعة، وشركات الأدوية<br>
+                    نقدّم حلول التغليف والطباعة بجودة عالية ومعايير احترافية تضمن لك منتج نهائي مميز، يعكس هويتك ويعزّز ثقة عملائك.</p>
+                    
+                    <p><strong>خدماتنا تشمل:</strong></p>
+                    <ul style="padding-right: 20px; color: rgba(255,255,255,0.8);">
+                        <li>تصميم عبوات وباكدچ احترافي</li>
+                        <li>طباعة عالية الدقة بأفضل الخامات</li>
+                        <li>حلول تغليف متوافقة مع معايير السلامة والجودة</li>
+                        <li>دعم كامل للشركات والمتاجر بأنواعها</li>
+                    </ul>
+                    
+                    <p><em>معانا هتلاقي خدمة سريعة، جودة ثابتة، وشغل يليق باسمك.</em></p>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>روابط سريعة</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#services">خدماتنا</a></li>
+                        <li><a href="#portfolio">معرض الأعمال</a></li>
+                        <li><a href="vue-admin.html">لوحة الإدارة</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <h5>تواصل معنا</h5>
+                    <p style="display: flex; align-items: center; justify-content: flex-start;">
+                        <i class="fas fa-phone" style="margin-left: 8px;"></i>
+                        <span style="direction: ltr;">+20 101 317 5636</span>
+                    </p>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>
+                        madinapress55@gmail.com
+                    </p>
+                    <p>
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        أسيوط - المدينة الصناعية
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.1)">
+            <div class="text-center">
+                <p>&copy; 2025 مطبعة المدينة. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            isScrolled: false,
+            showHero: false,
+            heroTitle: 'مطبعة المدينة',
+            heroSubtitle: 'نقدّم لك تجربة متكاملة… من التصميم إلى التسليم. جميع مراحل العمل تحت سقف واحد لضمان السرعة، الدقة، والجودة.',
+            activeFilter: 'الكل',
+            formSubmitted: false,
+            mobileMenuOpen: false,
+            
+            navItems: [
+                { id: 1, name: 'الرئيسية', link: '#home' },
+                { id: 2, name: 'خدماتنا', link: '#services' },
+                { id: 3, name: 'معرض الأعمال', link: '#portfolio' },
+                { id: 4, name: 'تواصل معنا', link: '#contact' },
+                { id: 5, name: 'لوحة الإدارة', link: 'vue-admin.html' }
+            ],
+            
+            services: [
+                {
+                    id: 1,
+                    icon: 'fas fa-candy-cane',
+                    title: 'تصميم علب الحلويات',
+                    description: 'تصميم وطباعة علب حلويات فاخرة لمحلات الحلويات والباتيسيري'
+                },
+                {
+                    id: 2,
+                    icon: 'fas fa-x-ray',
+                    title: 'أغلفة مراكز الأشعة',
+                    description: 'تصميم وطباعة أغلفة طبية احترافية لمراكز الأشعة والتصوير الطبي'
+                },
+                {
+                    id: 3,
+                    icon: 'fas fa-pills',
+                    title: 'كراتين الأدوية',
+                    description: 'تصميم وطباعة عبوات الأدوية للشركات الدوائية بمعايير عالمية'
+                },
+                {
+                    id: 4,
+                    icon: 'fas fa-id-card',
+                    title: 'كروت الأفراح والمناسبات',
+                    description: 'تصميم وطباعة كروت الدعوة الفاخرة لجميع المناسبات'
+                },
+                {
+                    id: 5,
+                    icon: 'fas fa-boxes',
+                    title: 'التغليف والكرتون',
+                    description: 'تصميم وتصنيع عبوات التغليف الكرتونية لجميع أنواع المنتجات'
+                },
+                {
+                    id: 6,
+                    icon: 'fas fa-stamp',
+                    title: ' والاغلفةطباعة جميع انواع الكتب ',
+                    description: 'خدمات طباعه جميع انواع الكتب الدراسية'
+                }
+            ],
+            
+            filters: ['الكل', 'حلويات ومعارض', 'شركات أدوية', 'مراكز أشعة', 'كتب وأغلفة'],
+            
+            portfolioItems: [],
+            
+            selectedProduct: null,
+            
+            inquiryForm: {
+                name: '',
+                phone: '',
+                message: ''
+            },
+            
+            form: {
+                name: '',
+                email: '',
+                phone: '',
+                message: ''
+            }
+        }
+    },
+    
+    computed: {
+        filteredPortfolio() {
+            if (this.activeFilter === 'الكل') {
+                return this.portfolioItems;
+            }
+            return this.portfolioItems.filter(item => item.category === this.activeFilter);
+        }
+    },
+    
+    watch: {
+        selectedProduct(newVal) {
+            if (newVal === null) {
+                document.body.style.overflow = 'auto'; // إعادة التمرير عند الإغلاق
+            }
+        }
+    },
+    
+    mounted() {
+        // جلب المنتجات من الباك اند بدلاً من localStorage
+        fetch('http://localhost:4000/api/portfolio')
+          .then(res => res.json())
+          .then(data => {
+            this.portfolioItems = data;
+          })
+          .catch(() => {
+            // في حالة فشل الباك اند، استخدم المنتجات الافتراضية
+            this.portfolioItems = [
+                {
+                    id: 1,
+                    title: 'علبة حلويات فاخرة',
+                    category: 'حلويات ومعارض',
+                    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600'
+                },
+                {
+                    id: 2,
+                    title: 'كرتونة دواء شركة',
+                    category: 'شركات أدوية',
+                    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600'
+                },
+                {
+                    id: 3,
+                    title: 'غلاف أشعة طبية',
+                    category: 'مراكز أشعة',
+                    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600'
+                },
+                {
+                    id: 4,
+                    title: 'علب كيك وحلويات',
+                    category: 'حلويات ومعارض',
+                    image: 'https://images.unsplash.com/photo-1562440499-64c9a111f713?w=600'
+                },
+                {
+                    id: 5,
+                    title: 'عبوة دواء طبي',
+                    category: 'شركات أدوية',
+                    image: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=600'
+                },
+                {
+                    id: 6,
+                    title: 'غلاف أشعة سينية',
+                    category: 'مراكز أشعة',
+                    image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=600'
+                }
+            ];
+          });
+
+        // Show hero animation
+        setTimeout(() => {
+            this.showHero = true;
+        }, 100);
+        window.addEventListener('scroll', this.handleScroll);
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(anchor.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    },
+    
+    methods: {
+        handleScroll() {
+            this.isScrolled = window.scrollY > 50;
+        },
+        
+        openLightbox(item) {
+            alert(`عرض: ${item.title}`);
+            // يمكنك إضافة مكون lightbox هنا
+        },
+        
+        openProductDetails(product) {
+            this.selectedProduct = product;
+            // إعادة تعيين فورم الاستفسار
+            this.inquiryForm = {
+                name: '',
+                phone: '',
+                message: ''
+            };
+            document.body.style.overflow = 'hidden'; // منع التمرير في الخلفية
+        },
+        
+        sendInquiry(phoneNumber) {
+            if (this.inquiryForm.name && this.inquiryForm.phone && this.selectedProduct) {
+                // حفظ الاستفسار في localStorage
+                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                const now = new Date();
+                messages.push({
+                    id: Date.now(),
+                    type: 'استفسار عن منتج',
+                    name: this.inquiryForm.name,
+                    phone: this.inquiryForm.phone,
+                    message: this.inquiryForm.message || 'استفسار عن المنتج',
+                    product: this.selectedProduct.title,
+                    category: this.selectedProduct.category,
+                    recipient: phoneNumber === '201013175636' ? 'سيد شحاتة' : 'أحمد شحاتة',
+                    timestamp: now.toISOString(),
+                    date: now.toLocaleDateString('ar-EG'),
+                    time: now.toLocaleTimeString('ar-EG'),
+                    read: false
+                });
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                
+                // إنشاء رسالة واتساب منسقة
+                const whatsappMessage = `
+🔔 *استفسار عن منتج من موقع مطبعة المدينة*
+━━━━━━━━━━━━━━━━━━━━━━
+
+📦 *المنتج:* ${this.selectedProduct.title}
+🏷️ *الفئة:* ${this.selectedProduct.category}
+
+👤 *اسم المستفسر:* ${this.inquiryForm.name}
+📱 *رقم الهاتف:* ${this.inquiryForm.phone}
+
+${this.inquiryForm.message ? `💬 *ملاحظات:*\n${this.inquiryForm.message}` : ''}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📅 تاريخ الاستفسار: ${new Date().toLocaleString('en-GB')}
+                `.trim();
+                
+                // تشفير الرسالة للرابط
+                const encodedMessage = encodeURIComponent(whatsappMessage);
+                
+                // فتح واتساب للرقم المحدد
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        },
+        
+        submitForm(phoneNumber) {
+            if (this.form.name && this.form.email && this.form.phone && this.form.message) {
+                // حفظ الرسالة في localStorage
+                const messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                const now = new Date();
+                messages.push({
+                    id: Date.now(),
+                    type: 'نموذج الاتصال',
+                    name: this.form.name,
+                    email: this.form.email,
+                    phone: this.form.phone,
+                    message: this.form.message,
+                    recipient: phoneNumber === '201013175636' ? 'سيد شحاتة' : 'أحمد شحاتة',
+                    timestamp: now.toISOString(),
+                    date: now.toLocaleDateString('ar-EG'),
+                    time: now.toLocaleTimeString('ar-EG'),
+                    read: false
+                });
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                
+                // إنشاء رسالة واتساب منسقة
+                const whatsappMessage = `
+🔔 *طلب جديد من موقع مطبعة المدينة*
+━━━━━━━━━━━━━━━━━━━━━━
+
+👤 *الاسم:* ${this.form.name}
+
+📧 *البريد الإلكتروني:* ${this.form.email}
+
+📱 *رقم الهاتف:* ${this.form.phone}
+
+💬 *الرسالة:*
+${this.form.message}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📅 تاريخ الإرسال: ${new Date().toLocaleString('en-GB')}
+                `.trim();
+                
+                // تشفير الرسالة للرابط
+                const encodedMessage = encodeURIComponent(whatsappMessage);
+                
+                // فتح واتساب للرقم المحدد
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+    }
+}).mount('#app');
+</script>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/201013175636" target="_blank" class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+</body>
+</html>
