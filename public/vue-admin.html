@@ -1634,6 +1634,7 @@ createApp({
         },
         
         loadProducts() {
+            // تحميل المنتجات فقط من الباك اند
             fetch('http://localhost:4000/api/portfolio')
                 .then(res => res.json())
                 .then(data => {
@@ -1644,7 +1645,7 @@ createApp({
                 });
         },
         saveProducts() {
-            // لم يعد هناك حاجة لهذه الدالة مع الباك اند
+            // تم تعطيل التخزين المحلي نهائياً
         },
         addProduct() {
             if (this.isEditMode) {
